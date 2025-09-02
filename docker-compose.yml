@@ -6,7 +6,4 @@ services:
     container_name: svg2img
     ports:
       - "8080:8080"
-    environment:
-      - DEFAULT_FORMAT=png
-      - DEFAULT_SCALE=1
     restart: unless-stopped
