@@ -5,20 +5,17 @@ import multer from "multer";
 const app = express();
 const upload = multer();
 
-// ✅ Enable body parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.raw({ type: "image/svg+xml", limit: "10mb" }));
 
-// Helper: do the conversion
 async function convertSvg(svgBuffer, format, scale = 1) {
-  // Default DPI is 72, multiply it by scale
   return sharp(svgBuffer, { density: 72 * scale })
     .toFormat(format)
     .toBuffer();
 }
 
-// Handle raw SVG
+// Raw SVG
 app.post("/convert", async (req, res, next) => {
   if (req.is("image/svg+xml")) {
     try {
@@ -34,7 +31,7 @@ app.post("/convert", async (req, res, next) => {
   next();
 });
 
-// Handle file or form field
+// File or form field
 app.post("/convert", upload.single("file"), async (req, res) => {
   try {
     let svgBuffer;
